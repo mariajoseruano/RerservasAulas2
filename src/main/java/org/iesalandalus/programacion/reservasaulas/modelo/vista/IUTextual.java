@@ -19,6 +19,7 @@ public class IUTextual {
         private static final String NOMBRE_VALIDO="Pedro Perez";
         private static final String CORREO_VALIDO="pedro@gmail.com";
         private ModeloReservasAulas modelo;
+    private Aula aula;
    
 
 	public IUTextual() {
@@ -40,7 +41,7 @@ public class IUTextual {
 		System.out.println("Hasta luego!");
 	}
 	
-	public void insertaraAula() {
+	public void insertarAula() {
 		Consola.mostrarCabecera("Insertar aula");
 		try {
 			Aula aula = Consola.leerAula();
@@ -153,28 +154,21 @@ public class IUTextual {
 	}
         //Reserva (Profesor profesor, Aula aula, Permanencia permanencia){
             
-        private Reserva leerReserva() {
+        private Reserva leerReserva(Profesor profesor) {
             
                        
-		System.out.print("Introduce el nombre del profesor: ");
-                String nombre=Entrada.cadena();
-		System.out.print("Introduce el teléfono: ");
-		String telefono = Entrada.cadena();
-		System.out.print("Introduce el correo: ");
-		String correo = Entrada.cadena();
-		System.out.print("Introduce el nombre del aula: ");
-		String nombre = Entrada.cadena();
-		System.out.print("Introduce el día: ");
-		dia = Entrada.localDate();
-		System.out.print("Introduce el tramo: ");
-		Tramo = Entrada.entero();
-		Aula aula = new Aula(nombre);
+		/*hay que leer aula y comprobar que existe con buscar aula
+                leer  dia y tramo
+		
+                Aula aula = new Aula(nombre);
 		Profesor profesor = new Profesor(nombre, correo, telefono);
 		Permanencia permanencia = new Permanencia (dia, tramo);
-		return new Reserva reserva(aula, profesor, permanencia);
+                
+		return new Reserva(aula, profesor, permanencia);
             
-	}
+	}*/
 	
+                
 	public void AnularReserva() {
 		Consola.mostrarCabecera("Anular aula");
 		try {
@@ -212,7 +206,7 @@ public class IUTextual {
         
          public void listarReservasProfesor() {
 		Consola.mostrarCabecera("Listar reservas profesor");
-		String[] profesores = modelo.getReservasProfesores(profesor);
+		String[] profesores = modelo.getReservasProfesor(profesor);
 		if (profesores.length > 0) {
 			for (String profesor: profesores) {
 				System.out.println(profesores);
@@ -239,15 +233,5 @@ public class IUTextual {
 			System.out.println("Consulta de disponibilidad.");
 		
 	}
-          
-          
-	
-}
 
-        
-    
-    
-    
-    
-    
-   
+}
