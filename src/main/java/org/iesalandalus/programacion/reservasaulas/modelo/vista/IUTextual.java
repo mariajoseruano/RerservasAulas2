@@ -9,7 +9,7 @@ import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Permanencia;
 import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Reserva;
 import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Tramo;
-import org.iesalandalus.programacion.reservasaulas.modelo.ModeloReservasAulas;
+import org.iesalandalus.programacion.rervasaulas.modelo.ModeloReservasAulas;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 
@@ -19,7 +19,7 @@ public class IUTextual {
         private static final String NOMBRE_VALIDO="Pedro Perez";
         private static final String CORREO_VALIDO="pedro@gmail.com";
         private ModeloReservasAulas modelo;
-    private Aula aula;
+    
    
 
 	public IUTextual() {
@@ -47,7 +47,7 @@ public class IUTextual {
 			Aula aula = Consola.leerAula();
 			modelo.insertarAula(aula);
 			System.out.println("Aula insertada correctamente.");
-		} catch (OperationNotSupportedException|IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
@@ -58,7 +58,7 @@ public class IUTextual {
 			Aula aula = Consola.leerAula();
 			modelo.borrarAula(aula);
 			System.out.println("Aula borrada correctamente.");
-		} catch (OperationNotSupportedException|IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
@@ -97,7 +97,7 @@ public class IUTextual {
 			Profesor profesor = Consola.leerProfesor();
 			modelo.insertarProfesor(profesor);
 			System.out.println("Profesor insertado correctamente.");
-		} catch (OperationNotSupportedException|IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
@@ -108,7 +108,7 @@ public class IUTextual {
 			Profesor profesor = Consola.leerProfesor();
 			modelo.borrarProfesor(profesor);
 			System.out.println("Profesor borrado correctamente.");
-		} catch (OperationNotSupportedException|IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
@@ -142,40 +142,62 @@ public class IUTextual {
 	}
         
         
+        
         public void realizarReserva() {
 		Consola.mostrarCabecera("Realizar reserva");
-		try {
-			Reserva reserva =leerReserva();
+		
+                
+                Profesor profesor=Consola.leerNombreProfesor();
+                
+                profesor=modelo.buscarProfesor();
+                
+                       
+                try {
+			Reserva reserva =leerReserva(profesor);
 			modelo.realizarReserva(reserva);
 			System.out.println("Reserva realizada correctamente.");
-		} catch (OperationNotSupportedException|IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
         //Reserva (Profesor profesor, Aula aula, Permanencia permanencia){
             
         private Reserva leerReserva(Profesor profesor) {
+                
+                Reserva reserva =null;
+                
+                Aula aula=Consola.leerAula();
+                aula=modelo.buscarAula(aula);
+                Permanencia permanencia=new Permanencia(Consola.LeerDia(), Consola.leerTramo());
+                
+                try{
+                    
+                    reserva=new reserva(aula, profesor,permanencia);
+                    
+                } catch (IllegalArgumentException e) {
+			System.out.println(ERROR + e.getMessage());
+                
+                return reserva;
+       
+        }
             
                        
-		/*hay que leer aula y comprobar que existe con buscar aula
-                leer  dia y tramo
-		
-                Aula aula = new Aula(nombre);
-		Profesor profesor = new Profesor(nombre, correo, telefono);
-		Permanencia permanencia = new Permanencia (dia, tramo);
+			
                 
-		return new Reserva(aula, profesor, permanencia);
+	public void anularReserva() {
             
-	}*/
-	
-                
-	public void AnularReserva() {
+        
 		Consola.mostrarCabecera("Anular aula");
+                
+                Profesor profesor=Consola.leerNombreProfesor();
+                
+                profesor=modelo.buscarProfesor();
+                                
 		try {
-			Reserva reserva = Consola.leerReserva();
+			Reserva reserva = leerReserva(profesor);
 			modelo.anularReserva(reserva);
 			System.out.println("Reserva anulada correctamente.");
-		} catch (OperationNotSupportedException|IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
@@ -194,7 +216,7 @@ public class IUTextual {
         
         public void listarReservasAula() {
 		Consola.mostrarCabecera("Listar reservas aula");
-		String[] aulas = modelo.getReservasAula(aula);
+		String[] aulas = modelo.getReservasAula();
 		if (aulas.length > 0) {
 			for (String aula: aulas) {
 				System.out.println(aulas);
@@ -206,7 +228,7 @@ public class IUTextual {
         
          public void listarReservasProfesor() {
 		Consola.mostrarCabecera("Listar reservas profesor");
-		String[] profesores = modelo.getReservasProfesor(profesor);
+		String[] profesores = modelo.getReservasProfesor();
 		if (profesores.length > 0) {
 			for (String profesor: profesores) {
 				System.out.println(profesores);
@@ -217,18 +239,28 @@ public class IUTextual {
 	}
         
          
-         //Pendiente
+         
          
           public void listarReservasPermanencia() {
 		Consola.mostrarCabecera("Listar reservas permanencia");
 		
+                String[] permanencias = modelo.getReservasPermanencia();
+		if (permanencias.length > 0) {
+			for (String permanencia: permanencias) {
+				System.out.println(permanencias);
+			}
+		} else {
+			System.out.println("No hay reservas de permanencias que listar.");
+		}
                 
           }    
 
+          // En desarrollo:
+          
          public void consultarDisponibilidad() {
 		Consola.mostrarCabecera("Consultar Disponibilidad");
 		
-			Reseva reserva = Consola.leerReserva();
+			Reserva reserva = Consola.leerReserva();
 			modelo.consultarDisponibilidad(aula, permanencia);
 			System.out.println("Consulta de disponibilidad.");
 		
