@@ -6,20 +6,24 @@
 package org.iesalandalus.programacion.reservasaulas.modelo.vista;
 
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Aula;
 import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Tramo;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Permanencia;
-import static org.iesalandalus.programacion.rervasaulas.modelo.dominio.Tramo.MANANA;
+import org.iesalandalus.programacion.rervasaulas.modelo.dominio.Reserva;
 import org.iesalandalus.programacion.utilidades.Entrada;
+
 
 public class Consola {
 	
-	private static final DateTimeFormatter FORMATO_DIA= new DateTimeFormatter("28/02/2018");
-	
+	private static final DateTimeFormatter FORMATO_DIA= DateTimeFormatter.ofPattern("dd/mm/yyyy");
+
+   	
 	private Consola() {
 		//Evito que se cree el constructor por defecto
 	}
@@ -64,6 +68,7 @@ public class Consola {
 		return new Aula(nombre);
 	}
         
+        
         public static Profesor leerProfesor() {
 		System.out.print("Introduce el nombre: ");
 		String nombre = Entrada.cadena();
@@ -90,37 +95,106 @@ public class Consola {
          
          
           
-        public static Tramo leerTramo() {
+        public static int leerTramo() {
                 
-                TRAMO tramo;
+               /* int elegirTramo;
                 
-                System.out.print("Introduce el tramo: ");
-                Tramo = Entrada.entero();
-		Tramo tramo = new Tramo(tramo);
-		return new Tramo(tramo);
-	}
-        
-        
-        public static Permanencia LeerDia();{
-    
-               	LocalDate dia;
+                do
+                {
+                    System.out.print("Introduce el tramo: 0.Mañana,1.Tarde:");
+                    elegirTramo= Entrada.entero();
+                }while (elegirTramo<0 || elegirTramo>=2);
 		
-                do {
-			System.out.print("Introduce el día: ");
-			dia = Entrada.localDate();
-		} while (dia == null);
-		Permanencia permanenciaDia = new Permanencia(dia,MANANA);
-		return new Permanencia(permanenciaDia,MANANA);
-	}
-                
+		return elegirTramo;*/
+               
+               int opcion;
+               int i;
+               
+               do{
+
+                  i=1;
+
+                for(Tramo t:Tramo.values()){            
+
+                System.out.println(i+"."+t);
+
+                i++;
+                }        
+
+                System.out.println("Elija una opción:");
+
+                opcion=Entrada.entero();
+
+                }while(opcion<=0 || opcion>Tramo.values().length);
+            
+       
+               
+              
+        public static LocalDate LeerDia(){      
+        
+                        
     
+      // Se puede hacer de dos maneras:
       
-      
-        	
-}
-
-
-
+            LocalDate fecha=null;
+            boolean fechaValida=true;
+            int dia, mes, anio;
+            
+            do
+            {
+                System.out.println("Introduce el día");
+                dia=Entrada.entero();
+        
+                System.out.println("Introduce el mes");
+                mes=Entrada.entero();
+        
+                System.out.println("Introduce el año");
+                anio=Entrada.entero();
+        
+                try
+                {
+                    fecha=LocalDate.of(anio,mes,dia);
+                    fechaValida=true;
+                }
+                catch(DateTimeException e)
+                {
+                    System.out.println("Fecha no válida");
+                    fechaValida=false;
+                }
+            }while(!fechaValida);
+        
+            String fechaFormato=fecha.format(FORMATO_DIA);
+        
+            LocalDate fechaFormateada=LocalDate.parse(fechaFormato,FORMATO_DIA);
+        
+            return fechaFormateada;
+            
+            
+            
+        } 
+         //Segunda opción:
+        
+               /* String dia;
+		boolean diaCorrecto = false;
+		do {
+			System.out.print("Introduce el día (dd/mm/aaaa): ");
+			dia = Entrada.cadena();
+			try {
+				LocalDate.parse(dia, FORMATO_DIA);
+				diaCorrecto = true;
+			} catch (DateTimeParseException e) {
+				diaCorrecto = false;
+			}
+		} while (!diaCorrecto);
+		
+                LocalDate f=LocalDate.parse(dia, FORMATO_DIA);
+                
+                return dia; 
+                
+         
+    }*/
+           
+    }
 
 
 
