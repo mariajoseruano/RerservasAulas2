@@ -97,16 +97,7 @@ public class Consola {
           
         public static int leerTramo() {
                 
-               /* int elegirTramo;
-                
-                do
-                {
-                    System.out.print("Introduce el tramo: 0.Mañana,1.Tarde:");
-                    elegirTramo= Entrada.entero();
-                }while (elegirTramo<0 || elegirTramo>=2);
-		
-		return elegirTramo;*/
-               
+      
                int opcion;
                int i;
                
@@ -130,7 +121,7 @@ public class Consola {
        
                
               
-        public static LocalDate LeerDia(){      
+        public static voidLocalDate LeerDia(){      
         
                         
     
@@ -195,6 +186,7 @@ public class Consola {
     }*/
            
     }
+
 
 
 
