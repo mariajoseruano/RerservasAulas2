@@ -27,6 +27,7 @@ public class IUTextual {
 		Opcion.setVista(this);
 	}
         
+        
         public void comenzar() {
 		int ordinalOpcion;
 		do {
@@ -143,6 +144,7 @@ public class IUTextual {
         
         
         
+        
         public void realizarReserva() {
 		Consola.mostrarCabecera("Realizar reserva");
 		
@@ -168,11 +170,11 @@ public class IUTextual {
                 
                 Aula aula=Consola.leerAula();
                 aula=modelo.buscarAula(aula);
-                Permanencia permanencia=new Permanencia(Consola.LeerDia(), Consola.leerTramo());
+                Permanencia permanencia=new Permanencia(Consola.LeerDia(),Consola.leerTramo());
                 
                 try{
                     
-                    reserva=new reserva(aula, profesor,permanencia);
+                    reserva=new Reserva(profesor, aula,permanencia);
                     
                 } catch (IllegalArgumentException e) {
 			System.out.println(ERROR + e.getMessage());
@@ -255,15 +257,29 @@ public class IUTextual {
                 
           }    
 
-          // En desarrollo:
           
+        
+        
+	
          public void consultarDisponibilidad() {
-		Consola.mostrarCabecera("Consultar Disponibilidad");
+		Consola.mostrarCabecera("Consultar disponibilidad");
 		
-			Reserva reserva = Consola.leerReserva();
-			modelo.consultarDisponibilidad(aula, permanencia);
-			System.out.println("Consulta de disponibilidad.");
+                Aula aula = new Aula(Consola.leerNombreAula());
 		
+                boolean disponibilidad = true;
+		if(modelo.buscarAula(aula) == null) {
+			System.out.println(ERROR + "El aula no existe.");
+			disponibilidad = false;
+		}
+		if(disponibilidad) {
+			Permanencia permanencia = new Permanencia(Consola.leerDia(), Consola.leerTramo());
+			boolean consultar = modelo.consultarDisponibilidad(aula, permanencia);
+			if(consultar)
+				System.out.println("El aula está disponible.");
+			else
+				System.out.println("El aula no está disponible.");
+		}
 	}
-
 }
+
+
